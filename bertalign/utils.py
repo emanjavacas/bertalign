@@ -1,5 +1,6 @@
 import re
-from googletrans import Translator
+import langdetect
+
 from sentence_splitter import SentenceSplitter
 
 def clean_text(text):
@@ -14,15 +15,7 @@ def clean_text(text):
     return "\n".join(clean_text)
     
 def detect_lang(text):
-    translator = Translator(service_urls=[
-      'translate.google.com.hk',
-    ])
-    max_len = 200
-    chunk = text[0 : min(max_len, len(text))]
-    lang = translator.detect(chunk).lang
-    if lang.startswith('zh'):
-        lang = 'zh'
-    return lang
+    return langdetect.detect(text)
 
 def split_sents(text, lang):
     if lang in LANG.SPLITTER:
